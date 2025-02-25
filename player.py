@@ -4,13 +4,15 @@ from constants import (
     PLAYER_SPEED, 
     PLAYER_TURN_SPEED,
     PLAYER_SHOT_SPEED,
+    SCREEN_HEIGHT,
+    SCREEN_WIDTH,
     SHOT_RADIUS
 )
 import pygame
 
 
 class Player(CircleShape): 
-    shots = []
+    
 
     def __init__(self, x, y, PLAYER_RADIUS):
         super().__init__(x, y, PLAYER_RADIUS)
@@ -51,8 +53,7 @@ class Player(CircleShape):
     
     def shoot(self):
         velocity = pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOT_SPEED       
-        new_shot = Shot(self.position.x, self.position.y, SHOT_RADIUS, velocity)
-        Player.shots.append(new_shot)
+        Shot(self.position.x, self.position.y, SHOT_RADIUS, velocity)
 
 
 
@@ -66,3 +67,9 @@ class Shot(CircleShape):
 
     def update(self, dt):
         self.position += self.velocity * dt
+    
+        if (self.position.x < 0 or 
+            self.position.x > SCREEN_WIDTH or 
+            self.position.y < 0 or 
+            self.position.y > SCREEN_HEIGHT):
+            self.kill()
