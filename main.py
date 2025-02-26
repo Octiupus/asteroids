@@ -35,8 +35,14 @@ def main():
         for shot in shots:
             for asteroid in asteroids:
                 if shot.collision(asteroid):
-                    asteroid.kill()
-                    shot.kill()
+                    new_asteroids = asteroid.split()  # Call `split()` instead of `kill()`
+                    if new_asteroids:  # If splitting creates new asteroids
+                        for new_asteroid in new_asteroids:
+                            asteroids.add(new_asteroid)  # Add to 'asteroids' group
+                            updatable.add(new_asteroid)  # Add to 'updatable' group
+                            drawable.add(new_asteroid)   # Add to 'drawable' group
+                    asteroid.kill()  # Remove the original asteroid
+                    shot.kill()  # Also remove the shot
         for sprite in drawable:
             sprite.draw(screen)
         pygame.display.flip()
